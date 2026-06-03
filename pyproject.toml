@@ -12,6 +12,7 @@ requires-python = ">=3.10"
 authors = [{name = "Eric Wolters", email = "eric.wolters@svend.ai"}]
 dependencies = [
     "scipy>=1.10",
+    "forgerender",
 ]
 
 [project.optional-dependencies]

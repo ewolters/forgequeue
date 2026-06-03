@@ -17,6 +17,33 @@ class QueueMetrics:
     w: float = 0.0  # avg time in system
     stable: bool = True
 
+    @property
+    def summary(self) -> str:
+        if not self.stable:
+            return "Queue unstable (rho >= 1)"
+        return f"Queue: rho={self.utilization:.2f} L={self.ls:.2f} W={self.w:.2f}"
+
+    def flow(self) -> dict:
+        """Flow-dialect view (forgerender.FLOW): time in system is the cycle
+        time (bridge token), plus server utilization."""
+        return {"cycle_time": self.w, "utilization": self.utilization}
+
+    def to_render(self):
+        """Theme-neutral ChartSpec: customers in queue vs in system."""
+        from forgerender import ROLE_DATA, ChartSpec
+
+        spec = ChartSpec(
+            title="Queue Metrics",
+            chart_type="queue_metrics",
+            x_axis={"label": "", "grid": False},
+            y_axis={"label": "Customers", "grid": True},
+        )
+        spec.add_trace(
+            ["In Queue (Lq)", "In System (L)"], [self.lq, self.ls],
+            name="Customers", trace_type="bar", color="", role=ROLE_DATA,
+        )
+        return spec
+
 
 def mm1(arrival_rate: float, service_rate: float) -> QueueMetrics:
     """M/M/1 queue — single server, Poisson arrivals, exponential service."""

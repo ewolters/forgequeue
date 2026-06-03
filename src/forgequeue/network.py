@@ -27,6 +27,45 @@ class NetworkResult:
     bottleneck: str = ""  # stage with highest utilization
     stable: bool = True
 
+    @property
+    def summary(self) -> str:
+        if not self.stable:
+            return "Network unstable (a stage has rho >= 1)"
+        return (
+            f"Network: {len(self.stages)} stages, WIP={self.total_wip:.1f}, "
+            f"time={self.total_time:.2f}, bottleneck={self.bottleneck}"
+        )
+
+    def flow(self) -> dict:
+        """Flow-dialect view (forgerender.FLOW): total time through the
+        network is the cycle time (bridge token)."""
+        return {"cycle_time": self.total_time}
+
+    def to_render(self):
+        """Theme-neutral ChartSpec: per-stage utilization, instability line
+        at rho=1, the bottleneck stage flagged. Depends only on forgerender."""
+        from forgerender import (
+            ROLE_CONTROL_LIMIT,
+            ROLE_DATA,
+            ROLE_OUT_OF_CONTROL,
+            ChartSpec,
+        )
+
+        names = [s.name for s in self.stages]
+        utils = [s.metrics.utilization for s in self.stages]
+        spec = ChartSpec(
+            title="Queueing Network — Stage Utilization",
+            chart_type="network_utilization",
+            x_axis={"label": "Stage", "grid": False},
+            y_axis={"label": "Utilization", "grid": True},
+        )
+        spec.add_trace(names, utils, name="Utilization", trace_type="bar", color="", role=ROLE_DATA)
+        spec.add_reference_line(1.0, color="", dash="dashed", label="Unstable", role=ROLE_CONTROL_LIMIT)
+        bottleneck = [i for i, s in enumerate(self.stages) if s.name == self.bottleneck]
+        if bottleneck:
+            spec.add_marker(bottleneck, color="", label="Bottleneck", role=ROLE_OUT_OF_CONTROL)
+        return spec
+
 
 def tandem(stages: list[dict]) -> NetworkResult:
     """Tandem (serial) queue network.
