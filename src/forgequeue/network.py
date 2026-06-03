@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from forgerender import ResultMixin
+
 from .single import QueueMetrics
 from .multi import mmc
 
@@ -18,7 +20,7 @@ class StageMetrics:
 
 
 @dataclass
-class NetworkResult:
+class NetworkResult(ResultMixin):
     """Queueing network result."""
 
     stages: list[StageMetrics] = field(default_factory=list)

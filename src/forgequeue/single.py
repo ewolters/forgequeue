@@ -4,9 +4,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from forgerender import ResultMixin
+
 
 @dataclass
-class QueueMetrics:
+class QueueMetrics(ResultMixin):
     """Standard queueing metrics."""
 
     utilization: float = 0.0  # ρ = λ / (c·μ)

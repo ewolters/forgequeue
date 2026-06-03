@@ -6,11 +6,12 @@ from forgerender import (
     ROLE_OUT_OF_CONTROL,
     ChartSpec,
     Result,
+    result_registry,
     speaks,
 )
 
-from forgequeue.network import tandem
-from forgequeue.single import mm1
+from forgequeue.network import NetworkResult, tandem
+from forgequeue.single import QueueMetrics, mm1
 
 
 def _net():
@@ -49,3 +50,9 @@ def test_network_to_render_flags_the_bottleneck():
     spec = _net().to_render()
     assert isinstance(spec, ChartSpec)
     assert any(m.role == ROLE_OUT_OF_CONTROL for m in spec.markers)
+
+
+def test_importing_forgequeue_registers_its_result_types():
+    reg = result_registry()
+    assert reg.get("QueueMetrics") is QueueMetrics
+    assert reg.get("NetworkResult") is NetworkResult
