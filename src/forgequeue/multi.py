@@ -39,7 +39,7 @@ def mmc(arrival_rate: float, service_rate: float, servers: int) -> QueueMetrics:
     # Metrics
     lq = pc * rho / (1 - rho)
     wq = lq / lam if lam > 0 else 0.0
-    w = wq + 1 / mu
+    w = wq + 1 / mu if lam > 0 else 0.0
     ls = lam * w
 
     return QueueMetrics(utilization=rho, p0=p0, lq=lq, ls=ls, wq=wq, w=w)

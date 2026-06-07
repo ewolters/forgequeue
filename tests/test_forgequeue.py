@@ -65,6 +65,8 @@ class TestMMC:
         assert r.utilization == 0.0
         assert r.wq == 0.0
         assert r.lq == 0.0
+        assert r.w == 0.0
+        assert r.ls == 0.0
 
 
 class TestMMCK:
