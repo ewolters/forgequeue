@@ -58,6 +58,14 @@ class TestMMC:
         r3 = mmc(20, 8, 5)
         assert r3.wq < r2.wq
 
+    def test_mmc_idle_queue_zero_arrivals(self):
+        # lambda=0: an idle M/M/c is well-defined, not a crash (matches mmck's guard)
+        r = mmc(0.0, 10.0, 1)
+        assert r.stable is True
+        assert r.utilization == 0.0
+        assert r.wq == 0.0
+        assert r.lq == 0.0
+
 
 class TestMMCK:
     def test_finite_always_stable(self):
