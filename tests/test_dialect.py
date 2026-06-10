@@ -1,7 +1,7 @@
 """forgequeue conforms to the FLOW dialect — the queueing solver speaks the
 full-rate tokens (utilization) plus the cycle_time bridge, and renders."""
 
-from forgerender import (
+from forgecore import (
     FLOW,
     ROLE_OUT_OF_CONTROL,
     ChartSpec,

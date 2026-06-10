@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from forgerender import ResultMixin
+from forgecore import ResultMixin
 
 from .single import QueueMetrics
 from .multi import mmc
@@ -39,14 +39,14 @@ class NetworkResult(ResultMixin):
         )
 
     def flow(self) -> dict:
-        """Flow-dialect view (forgerender.FLOW): total time through the
+        """Flow-dialect view (forgecore.FLOW): total time through the
         network is the cycle time (bridge token)."""
         return {"cycle_time": self.total_time}
 
     def to_render(self):
         """Theme-neutral ChartSpec: per-stage utilization, instability line
-        at rho=1, the bottleneck stage flagged. Depends only on forgerender."""
-        from forgerender import (
+        at rho=1, the bottleneck stage flagged. Depends only on forgecore."""
+        from forgecore import (
             ROLE_CONTROL_LIMIT,
             ROLE_DATA,
             ROLE_OUT_OF_CONTROL,

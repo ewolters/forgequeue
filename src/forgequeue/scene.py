@@ -1,4 +1,4 @@
-"""Scene adapter: turn a forgerender.Scene into an open Jackson network.
+"""Scene adapter: turn a forgecore.Scene into an open Jackson network.
 
 Each node becomes a queue node (servers / service_rate from attrs; external
 arrival_rate from attrs). Each edge's attrs['routing_prob'] becomes P[i][j] in
@@ -12,7 +12,7 @@ from .network import NetworkResult, jackson_network
 
 
 def network_from_scene(scene) -> NetworkResult:
-    """Adapt a forgerender.Scene into a Jackson-network solve.
+    """Adapt a forgecore.Scene into a Jackson-network solve.
 
     node.attrs: servers (default 1), service_rate (default 1.0),
     arrival_rate (external, default 0.0). edge.attrs['routing_prob'] -> P[i][j]

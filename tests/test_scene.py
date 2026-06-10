@@ -1,7 +1,7 @@
-"""forgequeue consumes the shared forgerender.Scene: nodes -> queue nodes,
+"""forgequeue consumes the shared forgecore.Scene: nodes -> queue nodes,
 edges' routing_prob -> the Jackson routing matrix. jackson_network untouched."""
 
-from forgerender import Edge, Node, Scene
+from forgecore import Edge, Node, Scene
 
 from forgequeue.network import jackson_network
 from forgequeue.scene import network_from_scene

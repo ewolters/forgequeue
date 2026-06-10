@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from forgerender import ResultMixin
+from forgecore import ResultMixin
 
 
 @dataclass
@@ -26,13 +26,13 @@ class QueueMetrics(ResultMixin):
         return f"Queue: rho={self.utilization:.2f} L={self.ls:.2f} W={self.w:.2f}"
 
     def flow(self) -> dict:
-        """Flow-dialect view (forgerender.FLOW): time in system is the cycle
+        """Flow-dialect view (forgecore.FLOW): time in system is the cycle
         time (bridge token), plus server utilization."""
         return {"cycle_time": self.w, "utilization": self.utilization}
 
     def to_render(self):
         """Theme-neutral ChartSpec: customers in queue vs in system."""
-        from forgerender import ROLE_DATA, ChartSpec
+        from forgecore import ROLE_DATA, ChartSpec
 
         spec = ChartSpec(
             title="Queue Metrics",
